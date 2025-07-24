@@ -22,7 +22,7 @@ const getMe = async (req, res) => {
 const updateMe = async (req, res) => {
   try {
     const { name } = req.body;
-    const user = await User.findByPk(req.user.id);
+    const user = await User.findByPk(req.user.user?.id);
 
     if (!user) return res.status(404).json({ message: "User not found" });
 
