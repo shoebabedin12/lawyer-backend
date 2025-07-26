@@ -1,15 +1,23 @@
-const lawyerModel = require('../models/lawyerModel');
+const { Lawyer, User } = require('../models');
 
-exports.getAll = async (req, res) => {
+const getAll = async (req, res) => {
   try {
-    const lawyers = await lawyerModel.getAllLawyers();
+    const lawyers = await Lawyer.findAll({
+      include: [
+        {
+          model: User,
+          as: 'User',
+          attributes: ['id', 'name', 'email']
+        }
+      ]
+    });
     res.json(lawyers);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
-exports.getOne = async (req, res) => {
+const getOne = async (req, res) => {
   try {
     const lawyer = await lawyerModel.getLawyerById(req.params.id);
     if (!lawyer) return res.status(404).json({ message: 'Not found' });
@@ -19,7 +27,7 @@ exports.getOne = async (req, res) => {
   }
 };
 
-exports.create = async (req, res) => {
+const create = async (req, res) => {
   try {
     const newLawyer = await lawyerModel.createLawyer(req.body);
     res.status(201).json(newLawyer);
@@ -28,7 +36,7 @@ exports.create = async (req, res) => {
   }
 };
 
-exports.update = async (req, res) => {
+const update = async (req, res) => {
   try {
     const updated = await lawyerModel.updateLawyer(req.params.id, req.body);
     res.json(updated);
@@ -37,7 +45,7 @@ exports.update = async (req, res) => {
   }
 };
 
-exports.remove = async (req, res) => {
+const remove = async (req, res) => {
   try {
     await lawyerModel.deleteLawyer(req.params.id);
     res.json({ message: 'Deleted successfully' });
@@ -45,3 +53,5 @@ exports.remove = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+module.exports = { getAll, getOne, create, update, remove};

@@ -14,13 +14,26 @@ module.exports = (sequelize, DataTypes) => {
        UserProfile.belongsTo(models.User, { foreignKey: 'userId' });
     }
   }
-  UserProfile.init({
-    phone: DataTypes.STRING,
-    address: DataTypes.STRING,
-    userId: DataTypes.INTEGER
-  }, {
-    sequelize,
-    modelName: 'UserProfile',
-  });
+   UserProfile.init(
+    {
+      userId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      phone: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      address: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+    },
+    {
+      sequelize,
+      modelName: 'UserProfile',
+      tableName: 'UserProfiles',
+    }
+  );
   return UserProfile;
 };

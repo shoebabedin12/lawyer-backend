@@ -1,6 +1,6 @@
 require("dotenv").config();
 const express = require("express");
-const bodyParser = require('body-parser'); // Optional, can use express.json/urlencoded
+const bodyParser = require('body-parser');
 const cors = require("cors");
 const cookieParser = require('cookie-parser');
 const http = require("http");
