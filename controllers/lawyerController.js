@@ -16,10 +16,10 @@ const getAll = async (req, res) => {
     });
     // res.json(lawyers);
     // Structure response
-res.status(200).json({
-  total: lawyers.count,     // 🔢 total number of lawyers
-  lawyers: lawyers.rows,    // 🧾 array of lawyer objects
-});
+    res.status(200).json({
+      total: lawyers.count, // 🔢 total number of lawyers
+      lawyers: lawyers.rows, // 🧾 array of lawyer objects
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

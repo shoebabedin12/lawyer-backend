@@ -8,7 +8,7 @@ const getMe = async (req, res) => {
     if (!user) return res.status(404).json({ message: "User not found" });
 
     res.json({
-      id: user.id,
+      data: user,
       name: user.name,
       email: user.email,
       role: user.role,
