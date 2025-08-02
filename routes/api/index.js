@@ -10,6 +10,6 @@ const adminRouter = require('./../admin')
 router.use('/auth', authRouter);
 router.use('/', adminRouter);
 router.use('/', userRouter);
-router.use('/', lawyerRouter);
+router.use('/lawyers', lawyerRouter);
 
 module.exports = router;

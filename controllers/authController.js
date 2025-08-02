@@ -44,8 +44,7 @@ const signup = async (req, res) => {
 
     return res.status(201).json({
       message: "User signed up successfully",
-      user: {user
-      },
+      user: {user},
     });
   } catch (err) {
     console.error(err);
@@ -68,12 +67,16 @@ const login = async (req, res) => {
 
     // Compare passwords
     const isMatch = await bcrypt.compare(password, user.password);
+
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    // Generate JWT token
-    const token = jwt.sign({ user }, process.env.JWT_SECRET, {
+     // Remove password from user object for token
+    const { password: _password, ...userWithoutPassword } = user.toJSON();
+
+    // Generate JWT token without password
+    const token = jwt.sign(userWithoutPassword, process.env.JWT_SECRET, {
       expiresIn: "7d",
     });
 

@@ -1,4 +1,5 @@
-const { Lawyer, User } = require("../models");
+const { Lawyer, User, UserProfile } = require("../models");
+const lawyer = require("../models/lawyer");
 
 const getAll = async (req, res) => {
   try {
@@ -27,9 +28,21 @@ const getAll = async (req, res) => {
 
 const getOne = async (req, res) => {
   try {
-    const lawyer = await lawyerModel.getLawyerById(req.params.id);
-    if (!lawyer) return res.status(404).json({ message: "Not found" });
-    res.json(lawyer);
+    const userId = req.user.id;
+    const lawyer = await Lawyer.findOne({
+      where: { userId },
+      include: [
+        { model: User, attributes: ['name', 'email'] },
+        { model: UserProfile },
+      ],
+    });
+    
+
+    if (!lawyer) return res.status(404).json({ message: "Lawyer not found" });
+
+    // Remove password or sensitive fields
+    const { password, ...lawyerData } = lawyer.toJSON(); // if using Sequelize
+    
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -62,4 +75,8 @@ const remove = async (req, res) => {
   }
 };
 
-module.exports = { getAll, getOne, create, update, remove };
+const getAllAppoinmentList = async (req, res)=>{
+
+}
+
+module.exports = { getAll, getOne, create, update, remove, getAllAppoinmentList};
